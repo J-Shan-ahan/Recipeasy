@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Recipeasy{% endblock %}
+
+{% block content %}
+    <h1>Search Results</h1>
+    {% if recipes %}
+        <ul>
+        {% for recipe in recipes %}
+            <li>
+                <h2><a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.title }}</a></h2>
+                <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+                    <img src="{{ url_for('static', filename='images/' ~ recipe.image_filename) }}" alt="{{ recipe.title }}" class="recipe-image">
+                </a>
+                
+                <!-- Tags as Links -->
+                <div class="tags">
+                    <p><strong>Tags:</strong>
+                    {% if recipe.tags %}
+                        {% set tags = recipe.tags.split(' ') %}
+                        {% for tag in tags %}
+                            {% if tag %} <!-- Check for non-empty tag -->
+                                <a href="/search?q={{ tag }}" class="tag-link">{{ tag }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Cuisine as Link -->
+                <p><strong>Category:</strong> 
+                    {% if recipe.cuisine %}
+                        <a href="{{ url_for('search_results') }}?q={{ recipe.cuisine }}" class="cuisine-link">{{ recipe.cuisine }}</a>
+                    {% else %}
+                        No cuisine available.
+                    {% endif %}
+                </p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recipes found.</p>
+    {% endif %}
+{% endblock %}

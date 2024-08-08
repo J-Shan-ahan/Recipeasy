@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipeasy{% endblock %}
+
+{% block content %}
+    <h1>Recipeasy: Recipes for Everyone!</h1>
+    {% if recipe %}
+        <h2>{{ recipe.title }}</h2>
+        <img src="{{ url_for('static', filename='images/' ~ recipe.image_filename) }}" alt="{{ recipe.title }}" class="recipe-image">
+        <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+        <p><strong>Instructions:</strong> {{ recipe.method }}</p>
+    {% else %}
+        <p>No recipe available.</p>
+    {% endif %}
+
+    <!-- Add tags as links -->
+    <div class="tags">
+        {% if recipe.tags %}
+            {% set tags = recipe.tags.split(' ') %}
+            {% for tag in tags %}
+                {% if tag %} <!-- Check for non-empty tag -->
+                    <a href="/search?q={{ tag }}" class="tag-link">{{ tag }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <p><strong>Cuisine:</strong> 
+        {% if recipe.cuisine %}
+            <a href="{{ url_for('search_results') }}?q={{ recipe.cuisine }}" class="cuisine-link">{{ recipe.cuisine }}</a>
+        {% else %}
+            No cuisine available.
+        {% endif %}
+    </p>
+{% endblock %}

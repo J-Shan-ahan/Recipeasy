@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.title }} - Recipeasy{% endblock %}
+
+{% block content %}
+    <h1>{{ recipe.title }}</h1>
+    <img src="{{ url_for('static', filename='images/' ~ recipe.image_filename) }}" alt="{{ recipe.title }}" class="recipe-image">
+    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+    <p><strong>Instructions:</strong> {{ recipe.method }}</p>
+
+    <!-- Tags as Links -->
+    <div class="tags">
+        {% if recipe.tags %}
+            {% set tags = recipe.tags.split(' ') %}
+            {% for tag in tags %}
+                {% if tag %} <!-- Check for non-empty tag -->
+                    <a href="/search?q={{ tag }}" class="tag-link">{{ tag }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

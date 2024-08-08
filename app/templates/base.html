@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Recipeasy{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap">
+</head>
+<body>
+    <header class="banner">
+        <a href="/" class="banner-link">
+            <h1>Recipeasy</h1>
+        </a>
+    </header>
+    
+    
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="home-button">Random Recipe</a>
+            <form action="/search" method="get" class="search-form">
+                <input type="text" name="q" placeholder="Search for recipes..." value="{{ request.args.get('q', '') }}" class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        
+            <h2>Categories</h2>
+            <ul>
+                {% for cuisine in cuisines %}
+                    <li><a href="/category/{{ cuisine }}">{{ cuisine }}</a></li>
+                {% endfor %}
+            </ul>
+        
+            <h2>Tags</h2>
+            <div class="tags"> <!-- Changed from <ul> to <div> -->
+                {% for tag in tags %}
+                    <a href="/search?q={{ tag }}" class="tag-link">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            {% block content %}
+            <!-- Content specific to each page will go here -->
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>
